@@ -189,7 +189,7 @@ set(JPEGXL_ENABLE_WASM_THREADS true CACHE BOOL
     "Builds WASM modules with threads support.")
 set(JPEGXL_ENABLE_LTO false CACHE BOOL
     "Set flags to enable LTO.")
-set(JXL_IS_DEBUG_BUILD false CACHE BOOL
+set(JPEGXL_FORCE_DEBUG_BUILD false CACHE BOOL
     "Force JXL_IS_DEBUG_BUILD definition even when NDEBUG is set.")
 
 # HWY codegen levers
@@ -244,7 +244,17 @@ endif()
 # used by clang-tidy.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if(JXL_IS_DEBUG_BUILD)
+if(DEFINED JXL_IS_DEBUG_BUILD)
+  if(JXL_IS_DEBUG_BUILD STREQUAL "" OR JXL_IS_DEBUG_BUILD)
+    set(JPEGXL_FORCE_DEBUG_BUILD ON CACHE BOOL
+        "Force JXL_IS_DEBUG_BUILD definition even when NDEBUG is set." FORCE)
+  else()
+    set(JPEGXL_FORCE_DEBUG_BUILD OFF CACHE BOOL
+        "Force JXL_IS_DEBUG_BUILD definition even when NDEBUG is set." FORCE)
+  endif()
+endif()
+
+if(JPEGXL_FORCE_DEBUG_BUILD)
   add_compile_definitions(JXL_IS_DEBUG_BUILD)
 endif()
 
