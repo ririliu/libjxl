@@ -245,7 +245,7 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(JXL_IS_DEBUG_BUILD)
-  add_definitions(-DJXL_IS_DEBUG_BUILD)
+  add_compile_definitions(JXL_IS_DEBUG_BUILD)
 endif()
 
 if(JPEGXL_STATIC)
