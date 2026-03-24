@@ -80,7 +80,7 @@ jobs:
     - name: Build
       run: |
         SKIP_TEST=1 \
-        ./ci.sh release \
+        ./ci.sh opt \
           -DJPEGXL_DEP_LICENSE_DIR=/usr/share/doc \
           -DJPEGXL_STATIC=ON \
           -DBUILD_TESTING=OFF \
@@ -254,7 +254,7 @@ jobs:
       VCPKG_VERSION: '2025.10.17'
       VCPKG_ROOT: vcpkg
       VCPKG_DISABLE_METRICS: 1
-      BUILD_TYPE: ${{ matrix.build_type || 'Release' }}
+      BUILD_TYPE: ${{ matrix.build_type || 'RelWithDebInfo' }}
       PREFIX: ${{matrix.triplet}}
 
     steps:
@@ -315,6 +315,7 @@ jobs:
           -DJPEGXL_ENABLE_TOOLS='ON' \
           -DBUILD_TESTING=OFF \
           -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+          -DCMAKE_CXX_FLAGS_RELWITHDEBINFO='-DJXL_IS_DEBUG_BUILD' \
           -DCMAKE_INSTALL_PREFIX=`pwd`/${PREFIX} \
           -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake \
           -DJPEGXL_ENABLE_OPENEXR=OFF \
@@ -355,7 +356,7 @@ jobs:
         mkdir tmp
         export TMPDIR=`pwd`/tmp
         export PATH=$PATH:`pwd`/build/lib
-        BUILD_CONFIG=Release/ BENCHMARK_NUM_THREADS=2 STORE_IMAGES=0 ./ci.sh fast_benchmark
+        BUILD_CONFIG=${{ env.BUILD_TYPE }}/ BENCHMARK_NUM_THREADS=2 STORE_IMAGES=0 ./ci.sh fast_benchmark
 
     - name: Package release
       shell: 'bash'
