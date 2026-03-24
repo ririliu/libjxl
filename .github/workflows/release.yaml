@@ -80,7 +80,7 @@ jobs:
     - name: Build
       run: |
         SKIP_TEST=1 \
-        # Use opt to keep RelWithDebInfo + JXL_IS_DEBUG_BUILD for release artifacts.
+        # Use opt (RelWithDebInfo + JXL_IS_DEBUG_BUILD) for release artifacts.
         ./ci.sh opt \
           -DJPEGXL_DEP_LICENSE_DIR=/usr/share/doc \
           -DJPEGXL_STATIC=ON \
